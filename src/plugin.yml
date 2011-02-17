@@ -1,3 +1,9 @@
 name: InventorySort
-main: com.bukkit.Wolfwood.InventorySort.InventorySort
-version: 0.1
+main: Wolfwood.InventorySort.InventorySort
+version: 0.5
+author: Wolfwood
+commands:
+  sort:
+    description:  Basic sort of your inventory.
+    usage: |
+           /<command> [top|all|0-35] [0-35]
