@@ -87,16 +87,16 @@ public class InventorySort extends JavaPlugin {
         String commandName = command.getName().toLowerCase();
 
         if (commandName.equals("sort")) {
+            if (anonymousCheck(sender)) {
+                return false;
+            }
             return sortInv(sender, trimmedArgs);
         }
         return false;
     }
 
     private boolean sortInv(CommandSender sender, String[] split) {
-        Player player = (Player)sender;
-        if (anonymousCheck(sender)) {
-            return false;
-        }
+        Player player = (Player) sender;
         int end = 36;
         int start = 0;
         if (split.length == 0) {
@@ -173,7 +173,7 @@ public class InventorySort extends JavaPlugin {
     }
 
     public boolean dispSortHelp(CommandSender sender) {
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         if (InventorySort.Permissions.has(player, "iSort.basic.all")) {
             sender.sendMessage("Example: " + ChatColor.GREEN + "/sort all " + ChatColor.WHITE + "- sorts all slots");
         } else {
