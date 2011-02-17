@@ -1,8 +1,10 @@
 package Wolfwood.InventorySort;
 
+import com.nijiko.Messaging;
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -10,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,9 +21,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @version 0.1
  * @author Wolfwood
  */
+// this plugin need's the permission's jar and the bukkit snapshot jar
 public class InventorySort extends JavaPlugin {
 
-    //private final InventorySortPlayerListener playerListener = new InventorySortPlayerListener(this);
+    public static PermissionHandler Permissions = null;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     public static final Logger log = Logger.getLogger("Minecraft");
 
@@ -30,16 +34,15 @@ public class InventorySort extends JavaPlugin {
     }
 
     public void onEnable() {
-        //PluginManager pm = getServer().getPluginManager();
-        //pm.registerEvent(Type.PLAYER_COMMAND, this.playerListener, Priority.Monitor, this);
+        setupPermissions();
 
         PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+        log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
     }
 
     public void onDisable() {
         PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println(pdfFile.getName() + " v " + pdfFile.getVersion() + " is disabled!");
+        log.info(pdfFile.getName() + " v " + pdfFile.getVersion() + " is disabled!");
     }
 
     public boolean isDebugging(final Player player) {
@@ -54,6 +57,21 @@ public class InventorySort extends JavaPlugin {
         debugees.put(player, value);
     }
 
+    public void setupPermissions() {
+        Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+
+        if (InventorySort.Permissions == null) {
+            if (test != null) {
+                InventorySort.Permissions = ((Permissions) test).getHandler();
+            } else {
+                log.info(Messaging.bracketize("Inventory Sort") + " Permission system not enabled. Disabling plugin.");
+                this.getServer().getPluginManager().disablePlugin(this);
+            }
+        }
+    }
+
+    // basically if it's the console sending the command it denies it.
     private boolean anonymousCheck(CommandSender sender) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Cannot execute that command, I don't know who you are!");
@@ -75,33 +93,43 @@ public class InventorySort extends JavaPlugin {
     }
 
     private boolean sortInv(CommandSender sender, String[] split) {
-
+        Player player = (Player)sender;
         if (anonymousCheck(sender)) {
             return false;
         }
         int end = 36;
         int start = 0;
         if (split.length == 0) {
-            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort all " + ChatColor.WHITE + "- sorts all slots");
-            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort top " + ChatColor.WHITE + "- sorts slots 9 - 35");
-            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 9 35 " + ChatColor.WHITE + "- sorts slots 9 - 35");
-            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 35 9 " + ChatColor.WHITE + "- sorts slots 9 - 35");
-            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 10 15 " + ChatColor.WHITE + "- sorts slots 10 - 15");
-            return false;
+            return dispSortHelp(sender);
         } else if (split.length == 1) {
             String what = split[0];
             if (what.equalsIgnoreCase("all")) {
+                if (!InventorySort.Permissions.has(player, "iSort.basic.all")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort all");
+                    return true;
+                }
                 end = 36;
                 start = 0;
-            }else if (what.equalsIgnoreCase("top")) {
+            } else if (what.equalsIgnoreCase("top")) {
+                if (!InventorySort.Permissions.has(player, "iSort.basic.top")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort top");
+                    return true;
+                }
                 end = 36;
                 start = 9;
             } else {
-                return false;
+                return dispSortHelp(sender);
             }
-        } else if (split.length == 2) {
-            int j = Integer.valueOf(split[0]);
-            int k = Integer.valueOf(split[1]);
+        } else if (split.length == 2 && InventorySort.Permissions.has(player, "iSort.basic.range")) {
+            int j = 35;
+            int k = 0;
+            try {
+                j = Integer.valueOf(split[0]);
+                k = Integer.valueOf(split[1]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage("Those were not numbers!");
+                return dispSortHelp(sender);
+            }
             if (j <= 35 && j >= 0 && k <= 35 && k >= 0) {
                 if (k > j) {
                     end = k + 1;
@@ -113,14 +141,16 @@ public class InventorySort extends JavaPlugin {
                     sender.sendMessage("You just want to slot " + j + " sorted? Ok, done.");
                     return true;
                 } else {
-                    return false; //should never get here
+                    return dispSortHelp(sender); //should never get here
                 }
             } else {
                 sender.sendMessage(ChatColor.YELLOW + "Out of range error.");
-                return false;
+                return dispSortHelp(sender);
             }
+        } else {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
+            return true;
         }
-        Player player = (Player) sender;
         int n = end;
         ItemStack[] x = player.getInventory().getContents();
         boolean doMore = true;
@@ -139,6 +169,28 @@ public class InventorySort extends JavaPlugin {
         }
         player.getInventory().setContents(x);
         sender.sendMessage(ChatColor.GRAY + "Slots " + start + "-" + (end - 1) + " have been sorted!");
+        return true;
+    }
+
+    public boolean dispSortHelp(CommandSender sender) {
+        Player player = (Player)sender;
+        if (InventorySort.Permissions.has(player, "iSort.basic.all")) {
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort all " + ChatColor.WHITE + "- sorts all slots");
+        } else {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort all");
+        }
+        if (InventorySort.Permissions.has(player, "iSort.basic.top")) {
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort top " + ChatColor.WHITE + "- sorts slots 9 - 35");
+        } else {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort top");
+        }
+        if (InventorySort.Permissions.has(player, "iSort.basic.range")) {
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 9 35 " + ChatColor.WHITE + "- sorts slots 9 - 35");
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 35 9 " + ChatColor.WHITE + "- sorts slots 9 - 35");
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 10 15 " + ChatColor.WHITE + "- sorts slots 10 - 15");
+        } else {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
+        }
         return true;
     }
 }
