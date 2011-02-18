@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -267,9 +268,7 @@ public class InventorySort extends JavaPlugin {
 
                     // Same type?
                     // Blocks store their color in the damage value
-                    if (item2.getTypeId() == item.getTypeId()
-                            && (!ItemType.usesDamageValue(item.getTypeId())
-                            || item.getDurability() == item2.getDurability())) {
+                    if (item2.getTypeId() == item.getTypeId() && (!ItemType.usesDamageValue(item.getTypeId()) || item.getDurability() == item2.getDurability())) {
                         // This stack won't fit in the parent stack
                         if (item2.getAmount() > needed) {
                             item.setAmount(64);
@@ -277,10 +276,9 @@ public class InventorySort extends JavaPlugin {
                             break;
                             // This stack will
                         } else {
-                            ItemStack air = new ItemStack(0);
-                            items[j] = air;
                             item.setAmount(item.getAmount() + item2.getAmount());
                             needed = 64 - item.getAmount();
+                            items[j].setTypeId(0);
                         }
                     }
                 }
