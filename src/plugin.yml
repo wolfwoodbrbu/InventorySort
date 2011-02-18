@@ -1,6 +1,6 @@
 name: InventorySort
 main: Wolfwood.InventorySort.InventorySort
-version: 0.9.1
+version: 0.9.2
 author: Wolfwood
 commands:
   sort:

@@ -157,10 +157,10 @@ public class InventorySort extends JavaPlugin {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
             return true;
         }
-        ItemStack[] x = player.getInventory().getContents();
-        x = sortItemStack(x, start, end);
+        ItemStack[] plyrStack = player.getInventory().getContents();
+        plyrStack = sortItemStack(plyrStack, start, end);
 
-        player.getInventory().setContents(x);
+        player.getInventory().setContents(plyrStack);
         sender.sendMessage(ChatColor.GRAY + "Slots " + start + "-" + (end - 1) + " have been sorted!");
         return true;
     }
@@ -191,28 +191,28 @@ public class InventorySort extends JavaPlugin {
         return true;
     }
 
-    private ItemStack[] sortItemStack(ItemStack[] x) {
-        return sortItemStack(x, 0, x.length);
+    private ItemStack[] sortItemStack(ItemStack[] stack) {
+        return sortItemStack(stack, 0, stack.length);
     }
 
-    private ItemStack[] sortItemStack(ItemStack[] x, int start, int end) {
-        x = stackItems(x, start, end);
+    private ItemStack[] sortItemStack(ItemStack[] stack, int start, int end) {
+        stack = stackItems(stack, start, end);
         boolean doMore = true;
         int n = end;
         while (doMore) {
             n--;
             doMore = false;  // assume this is our last pass over the array
             for (int i = start; i < n; i++) {
-                if (x[i].getTypeId() > x[i + 1].getTypeId()) {
+                if (stack[i].getTypeId() > stack[i + 1].getTypeId()) {
                     // exchange elements
-                    ItemStack temp = x[i];
-                    x[i] = x[i + 1];
-                    x[i + 1] = temp;
+                    ItemStack temp = stack[i];
+                    stack[i] = stack[i + 1];
+                    stack[i + 1] = temp;
                     doMore = true;  // after an exchange, must look again
                 }
             }
         }
-        return x;
+        return stack;
     }
 
     private boolean dispSortHelp(CommandSender sender) {
@@ -277,16 +277,15 @@ public class InventorySort extends JavaPlugin {
                             break;
                             // This stack will
                         } else {
-                            items[j] = null;
+                            ItemStack air = new ItemStack(0);
+                            items[j] = air;
                             item.setAmount(item.getAmount() + item2.getAmount());
                             needed = 64 - item.getAmount();
                         }
-
                     }
                 }
             }
         }
-
         return items;
     }
 }
