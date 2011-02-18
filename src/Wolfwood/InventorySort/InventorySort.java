@@ -16,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.block.*;
 
 /**
  * @version 0.1
@@ -90,12 +91,17 @@ public class InventorySort extends JavaPlugin {
             if (anonymousCheck(sender)) {
                 return false;
             }
-            return sortInv(sender, trimmedArgs);
+            return sortPlyInv(sender, trimmedArgs);
+        } else if (commandName.equals("sortchest")) {
+            if (anonymousCheck(sender)) {
+                return false;
+            }
+            return sortChestInv(sender, trimmedArgs);
         }
         return false;
     }
 
-    private boolean sortInv(CommandSender sender, String[] split) {
+    private boolean sortPlyInv(CommandSender sender, String[] split) {
         Player player = (Player) sender;
         int end = 36;
         int start = 0;
@@ -151,13 +157,50 @@ public class InventorySort extends JavaPlugin {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
             return true;
         }
-        int n = end;
-        ItemStack[] x = player.getInventory().getContents();
+        //ItemStack[] x = player.getInventory().getContents();
+        //x = sortItemStack(x, start, end);
+
+        player.getInventory().setContents(sortItemStack(stackItems(player.getInventory().getContents(), start, end), start, end));
+        sender.sendMessage(ChatColor.GRAY + "Slots " + start + "-" + (end - 1) + " have been sorted!");
+        return true;
+    }
+
+    private boolean sortChestInv(CommandSender sender, String[] split) {
+        Player player = (Player) sender;
+        if (!InventorySort.Permissions.has(player, "iSort.basic.chest")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest");
+            return true;
+        }
+        TargetBlock hitBlox = new TargetBlock(player);
+        Block target = hitBlox.getTargetBlock();
+        int intX = target.getX();
+        int intY = target.getY();
+        int intZ = target.getZ();
+        Block block = player.getWorld().getBlockAt(intX, intY, intZ);
+        BlockState state = block.getState();
+        if (state instanceof Chest) {
+            Chest chest = (Chest) state;
+            ItemStack[] x = chest.getInventory().getContents();
+            x = sortItemStack(x);
+            chest.getInventory().setContents(x);
+            chest.update();
+            sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+        } else {
+            sender.sendMessage("You are not looking at a Chest");
+        }
+        return true;
+    }
+
+    private ItemStack[] sortItemStack(ItemStack[] x) {
+        return sortItemStack(x, 0, x.length);
+    }
+
+    private ItemStack[] sortItemStack(ItemStack[] x, int start, int end) {
         boolean doMore = true;
         while (doMore) {
-            n--;
+            end--;
             doMore = false;  // assume this is our last pass over the array
-            for (int i = start; i < n; i++) {
+            for (int i = start; i < end; i++) {
                 if (x[i].getTypeId() > x[i + 1].getTypeId()) {
                     // exchange elements
                     ItemStack temp = x[i];
@@ -167,12 +210,10 @@ public class InventorySort extends JavaPlugin {
                 }
             }
         }
-        player.getInventory().setContents(x);
-        sender.sendMessage(ChatColor.GRAY + "Slots " + start + "-" + (end - 1) + " have been sorted!");
-        return true;
+        return x;
     }
 
-    public boolean dispSortHelp(CommandSender sender) {
+    private boolean dispSortHelp(CommandSender sender) {
         Player player = (Player) sender;
         if (InventorySort.Permissions.has(player, "iSort.basic.all")) {
             sender.sendMessage("Example: " + ChatColor.GREEN + "/sort all " + ChatColor.WHITE + "- sorts all slots");
@@ -192,5 +233,58 @@ public class InventorySort extends JavaPlugin {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
         }
         return true;
+    }
+
+    private ItemStack[] stackItems(ItemStack[] items, int start, int end) {
+        for (int i = start; i < end; i++) {
+            ItemStack item = items[i];
+
+            // Avoid infinite stacks and stacks with durability
+            if (item == null || item.getAmount() <= 0
+                    || ItemType.shouldNotStack(item.getTypeId())) {
+                continue;
+            }
+
+            // Ignore buckets
+            if (item.getTypeId() >= 325 && item.getTypeId() <= 327) {
+                continue;
+            }
+
+            if (item.getAmount() < 64) {
+                int needed = 64 - item.getAmount(); // Number of needed items until 64
+
+                // Find another stack of the same type
+                for (int j = i + 1; j < end; j++) {
+                    ItemStack item2 = items[j];
+
+                    // Avoid infinite stacks and stacks with durability
+                    if (item2 == null || item2.getAmount() <= 0
+                            || ItemType.shouldNotStack(item.getTypeId())) {
+                        continue;
+                    }
+
+                    // Same type?
+                    // Blocks store their color in the damage value
+                    if (item2.getTypeId() == item.getTypeId()
+                            && (!ItemType.usesDamageValue(item.getTypeId())
+                            || item.getDurability() == item2.getDurability())) {
+                        // This stack won't fit in the parent stack
+                        if (item2.getAmount() > needed) {
+                            item.setAmount(64);
+                            item2.setAmount(item2.getAmount() - needed);
+                            break;
+                            // This stack will
+                        } else {
+                            items[j] = null;
+                            item.setAmount(item.getAmount() + item2.getAmount());
+                            needed = 64 - item.getAmount();
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return items;
     }
 }
