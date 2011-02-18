@@ -157,10 +157,10 @@ public class InventorySort extends JavaPlugin {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
             return true;
         }
-        //ItemStack[] x = player.getInventory().getContents();
-        //x = sortItemStack(x, start, end);
+        ItemStack[] x = player.getInventory().getContents();
+        x = sortItemStack(x, start, end);
 
-        player.getInventory().setContents(sortItemStack(stackItems(player.getInventory().getContents(), start, end), start, end));
+        player.getInventory().setContents(x);
         sender.sendMessage(ChatColor.GRAY + "Slots " + start + "-" + (end - 1) + " have been sorted!");
         return true;
     }
@@ -196,11 +196,13 @@ public class InventorySort extends JavaPlugin {
     }
 
     private ItemStack[] sortItemStack(ItemStack[] x, int start, int end) {
+        x = stackItems(x, start, end);
         boolean doMore = true;
+        int n = end;
         while (doMore) {
-            end--;
+            n--;
             doMore = false;  // assume this is our last pass over the array
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < n; i++) {
                 if (x[i].getTypeId() > x[i + 1].getTypeId()) {
                     // exchange elements
                     ItemStack temp = x[i];
