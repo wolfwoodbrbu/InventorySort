@@ -4,11 +4,12 @@ import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.*;
 
 /**
- * @version 0.1
+ * @version 1.1
  * @author Wolfwood
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -181,15 +182,63 @@ public class InventorySort extends JavaPlugin {
         BlockState state = block.getState();
         if (state instanceof Chest) {
             Chest chest = (Chest) state;
-            ItemStack[] x = chest.getInventory().getContents();
-            x = sortItemStack(x);
-            chest.getInventory().setContents(x);
+            ItemStack[] stack1 = chest.getInventory().getContents();
+            ItemStack[] stack2;
+            Chest chest2 = isDoubleChest(player.getWorld(), block);
+            if (chest2 != null) {
+                stack2 = chest2.getInventory().getContents();
+                ItemStack[] both = concat(stack1, stack2);
+                both = sortItemStack(both);
+                stack1 = Arrays.copyOfRange(both, 0, stack1.length);
+                stack2 = Arrays.copyOfRange(both, stack1.length, stack1.length + stack2.length);
+                chest.getInventory().setContents(stack1);
+                chest.update();
+                chest2.getInventory().setContents(stack2);
+                chest2.update();
+                sender.sendMessage(ChatColor.GRAY + "The Doublechest has been sorted.");
+                sender.sendMessage(ChatColor.GRAY + "Sort the other side if it doesn't look right.");
+                return true;
+            }
+            stack1 = sortItemStack(stack1);
+            chest.getInventory().setContents(stack1);
             chest.update();
             sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
         } else {
             sender.sendMessage("You are not looking at a Chest");
         }
         return true;
+    }
+
+    private ItemStack[] concat(ItemStack[] A, ItemStack[] B) {
+        ItemStack[] C = new ItemStack[A.length + B.length];
+        System.arraycopy(A, 0, C, 0, A.length);
+        System.arraycopy(B, 0, C, A.length, B.length);
+
+        return C;
+    }
+
+    private Chest isDoubleChest(World world, Block chest1) {
+        Block chest2 = world.getBlockAt(chest1.getX() + 1, chest1.getY(), chest1.getZ());
+        BlockState state = chest2.getState();
+        if (state instanceof Chest) {
+            return (Chest) state;
+        }
+        chest2 = world.getBlockAt(chest1.getX() - 1, chest1.getY(), chest1.getZ());
+        state = chest2.getState();
+        if (state instanceof Chest) {
+            return (Chest) state;
+        }
+        chest2 = world.getBlockAt(chest1.getX(), chest1.getY(), chest1.getZ() + 1);
+        state = chest2.getState();
+        if (state instanceof Chest) {
+            return (Chest) state;
+        }
+        chest2 = world.getBlockAt(chest1.getX(), chest1.getY(), chest1.getZ() - 1);
+        state = chest2.getState();
+        if (state instanceof Chest) {
+            return (Chest) state;
+        }
+        return null;
     }
 
     private ItemStack[] sortItemStack(ItemStack[] stack) {
