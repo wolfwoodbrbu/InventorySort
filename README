@@ -4,7 +4,7 @@ Version: 1.3
 
 Download: InventorySort v1.3.zip
 
-Previous Versions: (v1.2)
+Previous Versions: v1.2
 
 Source: https://github.com/wolfwoodbrbu/InventorySort
 
@@ -74,6 +74,8 @@ v1.2 - 2/18/2011
 +Initial Release to bukkit.org
 
 
-v1.2 - 2/21/2011
+v1.3 - 2/21/2011
 
-+Fixed doublechest detection
++[Fixed] doublechest detection
+
++[Added] /srtc alias for /sortchest
