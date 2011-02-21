@@ -2,12 +2,10 @@ package Wolfwood.InventorySort;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,12 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.*;
 
 /**
- * @version 1.3
+ * @version 1.3.5
  * @author Wolfwood
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -29,11 +26,6 @@ public class InventorySort extends JavaPlugin {
     public static PermissionHandler Permissions = null;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     public static final Logger log = Logger.getLogger("Minecraft");
-
-//    public InventorySort(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder,
-//            File plugin, ClassLoader cLoader) {
-//        super(pluginLoader, instance, desc, folder, plugin, cLoader);
-//    }
 
     public void onEnable() {
         setupPermissions();
