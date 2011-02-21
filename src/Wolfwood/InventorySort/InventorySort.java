@@ -30,10 +30,10 @@ public class InventorySort extends JavaPlugin {
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     public static final Logger log = Logger.getLogger("Minecraft");
 
-    public InventorySort(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder,
-            File plugin, ClassLoader cLoader) {
-        super(pluginLoader, instance, desc, folder, plugin, cLoader);
-    }
+//    public InventorySort(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder,
+//            File plugin, ClassLoader cLoader) {
+//        super(pluginLoader, instance, desc, folder, plugin, cLoader);
+//    }
 
     public void onEnable() {
         setupPermissions();
