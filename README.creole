@@ -1,11 +1,11 @@
-InventorySort - Sorts your inventory or the chest your looking at.//
-**Version:** 1.3//
-**Download:** [[http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.3/InventorySort%20v1.3.zip|InventorySort v1.3.zip]]//
-**Previous Versions:** [[http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.2/InventorySort%20v1.2.zip|v1.2]]//
-**Source:** [[https://github.com/wolfwoodbrbu/InventorySort]]//
-**[[http://forums.bukkit.org/threads/admn-info-permissions-v2-0-revolutionizing-the-group-system.1403/|Permissions Required]]**//
+InventorySort - Sorts your inventory or the chest your looking at.\\
+**Version:** 1.3\\
+**Download:** [[http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.3/InventorySort%20v1.3.zip|InventorySort v1.3.zip]]\\
+**Previous Versions:** [[http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.2/InventorySort%20v1.2.zip|v1.2]]\\
+**Source:** [[https://github.com/wolfwoodbrbu/InventorySort]]\\
+**[[http://forums.bukkit.org/threads/admn-info-permissions-v2-0-revolutionizing-the-group-system.1403/|Permissions Required]]**\\
 
-InventorySort allows you to sort all or part of your inventory ordered on the block/item TypeId number. You can also sort chests in the same manner.//
+InventorySort allows you to sort all or part of your inventory ordered on the block/item TypeId number. You can also sort chests in the same manner.\\
 
 **Commands:**
 * **/sort all** - Sorts all of the slots in your inventory(slots 0-35)
@@ -17,10 +17,10 @@ InventorySort allows you to sort all or part of your inventory ordered on the bl
 
 **Permissions:**
 
-    iSort.basic.all - /sort all command//
-    iSort.basic.top - /sort top command//
-    iSort.basic.range - /sort [0-35] [0-35] command//
-    iSort.basic.chest - /sortchest command//
+    iSort.basic.all - /sort all command\\
+    iSort.basic.top - /sort top command\\
+    iSort.basic.range - /sort [0-35] [0-35] command\\
+    iSort.basic.chest - /sortchest command
 
 **Side Note/Thanks:**
 
@@ -46,9 +46,9 @@ InventorySort allows you to sort all or part of your inventory ordered on the bl
 
 **Change Log:**
 
-v1.2 - 2/18/2011//
+v1.2 - 2/18/2011\\
 +Initial Release to bukkit.org
 
-v1.3 - 2/21/2011//
-+[Fixed] doublechest detection//
+v1.3 - 2/21/2011\\
++[Fixed] doublechest detection\\
 +[Added] /srtc alias for /sortchest
