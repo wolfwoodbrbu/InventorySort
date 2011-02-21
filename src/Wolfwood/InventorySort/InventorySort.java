@@ -40,12 +40,12 @@ public class InventorySort extends JavaPlugin {
         setupPermissions();
 
         PluginDescriptionFile pdfFile = this.getDescription();
-        log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+        log.info(Messaging.bracketize(pdfFile.getName()) + " version " + pdfFile.getVersion() + " is enabled!");
     }
 
     public void onDisable() {
         PluginDescriptionFile pdfFile = this.getDescription();
-        log.info(pdfFile.getName() + " v " + pdfFile.getVersion() + " is disabled!");
+        log.info(Messaging.bracketize(pdfFile.getName()) + " v " + pdfFile.getVersion() + " is disabled!");
     }
 
     public boolean isDebugging(final Player player) {
@@ -68,7 +68,7 @@ public class InventorySort extends JavaPlugin {
             if (test != null) {
                 InventorySort.Permissions = ((Permissions) test).getHandler();
             } else {
-                log.info(Messaging.bracketize("Inventory Sort") + " Permission system not enabled. Disabling plugin.");
+                log.info(Messaging.bracketize(this.getDescription().getName()) + " Permission system not enabled. Disabling plugin.");
                 this.getServer().getPluginManager().disablePlugin(this);
             }
         }
@@ -94,11 +94,17 @@ public class InventorySort extends JavaPlugin {
                 return false;
             }
             return sortPlyInv(sender, trimmedArgs);
-        } else if (commandName.equals("sortchest")) {
+        } else if (commandName.equals("sortchest") || commandName.equals("srtc")) {
             if (anonymousCheck(sender)) {
                 return false;
             }
-            return sortChestInv(sender, trimmedArgs);
+            if(sortChestInv(sender, trimmedArgs))
+	    {
+		sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+		return true;
+	    } else {
+		return false;
+	    }
         }
         return false;
     }
@@ -181,32 +187,38 @@ public class InventorySort extends JavaPlugin {
         Block block = player.getWorld().getBlockAt(intX, intY, intZ);
         BlockState state = block.getState();
         if (state instanceof Chest) {
-            Chest chest = (Chest) state;
-            ItemStack[] stack1 = chest.getInventory().getContents();
-            ItemStack[] stack2;
-            Chest chest2 = isDoubleChest(player.getWorld(), block);
-            if (chest2 != null) {
-                stack2 = chest2.getInventory().getContents();
-                ItemStack[] both = concat(stack1, stack2);
-                both = sortItemStack(both);
-                stack1 = Arrays.copyOfRange(both, 0, stack1.length);
-                stack2 = Arrays.copyOfRange(both, stack1.length, stack1.length + stack2.length);
-                chest.getInventory().setContents(stack1);
-                chest.update();
-                chest2.getInventory().setContents(stack2);
-                chest2.update();
-                sender.sendMessage(ChatColor.GRAY + "The Doublechest has been sorted.");
-                sender.sendMessage(ChatColor.GRAY + "Sort the other side if it doesn't look right.");
-                return true;
-            }
-            stack1 = sortItemStack(stack1);
-            chest.getInventory().setContents(stack1);
-            chest.update();
-            sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+            Chest chest1 = (Chest) state;
+            Chest chest2 = isDoubleChest(player.getWorld(), block, 1);
+	    if (chest2 != null)
+	    {
+		return sortDblChst(chest1, chest2);
+	    } else {
+		chest2 = isDoubleChest(player.getWorld(), block, -1);
+		if (chest2 != null)
+		{
+		    return sortDblChst(chest2, chest1);
+		}
+	    }
+	    ItemStack[] stack1 = sortItemStack(chest1.getInventory().getContents());
+            chest1.getInventory().setContents(stack1);
+            chest1.update();
         } else {
             sender.sendMessage("You are not looking at a Chest");
         }
         return true;
+    }
+
+    private boolean sortDblChst(Chest chest1, Chest chest2){
+	ItemStack[] s1 = chest1.getInventory().getContents();
+	ItemStack[] s2 = chest2.getInventory().getContents();
+	ItemStack[] both = concat(s1, s2);
+	s1 = Arrays.copyOfRange(both, 0, s1.length);
+	s2 = Arrays.copyOfRange(both, s1.length, s1.length+s2.length);
+	chest1.getInventory().setContents(s1);
+	chest2.getInventory().setContents(s2);
+	chest1.update();
+	chest2.update();
+	return true;
     }
 
     private ItemStack[] concat(ItemStack[] A, ItemStack[] B) {
@@ -217,23 +229,13 @@ public class InventorySort extends JavaPlugin {
         return C;
     }
 
-    private Chest isDoubleChest(World world, Block chest1) {
-        Block chest2 = world.getBlockAt(chest1.getX() + 1, chest1.getY(), chest1.getZ());
+    private Chest isDoubleChest(World world, Block chest1, int offset) {
+        Block chest2 = world.getBlockAt(chest1.getX() + offset, chest1.getY(), chest1.getZ());
         BlockState state = chest2.getState();
         if (state instanceof Chest) {
             return (Chest) state;
         }
-        chest2 = world.getBlockAt(chest1.getX() - 1, chest1.getY(), chest1.getZ());
-        state = chest2.getState();
-        if (state instanceof Chest) {
-            return (Chest) state;
-        }
-        chest2 = world.getBlockAt(chest1.getX(), chest1.getY(), chest1.getZ() + 1);
-        state = chest2.getState();
-        if (state instanceof Chest) {
-            return (Chest) state;
-        }
-        chest2 = world.getBlockAt(chest1.getX(), chest1.getY(), chest1.getZ() - 1);
+        chest2 = world.getBlockAt(chest1.getX(), chest1.getY(), chest1.getZ() + offset);
         state = chest2.getState();
         if (state instanceof Chest) {
             return (Chest) state;
@@ -283,6 +285,11 @@ public class InventorySort extends JavaPlugin {
             sender.sendMessage("Example: " + ChatColor.GREEN + "/sort 10 15 " + ChatColor.WHITE + "- sorts slots 10 - 15");
         } else {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
+        }
+	if (InventorySort.Permissions.has(player, "iSort.basic.chest")) {
+            sender.sendMessage("Example: " + ChatColor.GREEN + "/sortchest " + ChatColor.WHITE + "- sorts the chest your looking at");
+	} else {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest");
         }
         return true;
     }
