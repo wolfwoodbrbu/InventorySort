@@ -1,6 +1,5 @@
 package Wolfwood.InventorySort;
 
-import com.nijiko.Messaging;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import java.io.File;
@@ -21,7 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.*;
 
 /**
- * @version 1.1
+ * @version 1.3
  * @author Wolfwood
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -40,12 +39,12 @@ public class InventorySort extends JavaPlugin {
         setupPermissions();
 
         PluginDescriptionFile pdfFile = this.getDescription();
-        log.info(Messaging.bracketize(pdfFile.getName()) + " version " + pdfFile.getVersion() + " is enabled!");
+        log.info("[" + pdfFile.getName() + "] version " + pdfFile.getVersion() + " is enabled!");
     }
 
     public void onDisable() {
         PluginDescriptionFile pdfFile = this.getDescription();
-        log.info(Messaging.bracketize(pdfFile.getName()) + " v " + pdfFile.getVersion() + " is disabled!");
+        log.info("[" + pdfFile.getName() + "] version " + pdfFile.getVersion() + " is disabled!");
     }
 
     public boolean isDebugging(final Player player) {
@@ -68,7 +67,7 @@ public class InventorySort extends JavaPlugin {
             if (test != null) {
                 InventorySort.Permissions = ((Permissions) test).getHandler();
             } else {
-                log.info(Messaging.bracketize(this.getDescription().getName()) + " Permission system not enabled. Disabling plugin.");
+                log.info("[" + this.getDescription().getName() + "]" + " Permission system not enabled. Disabling plugin.");
                 this.getServer().getPluginManager().disablePlugin(this);
             }
         }
@@ -94,17 +93,20 @@ public class InventorySort extends JavaPlugin {
                 return false;
             }
             return sortPlyInv(sender, trimmedArgs);
-        } else if (commandName.equals("sortchest") || commandName.equals("srtc")) {
+        } else if (commandName.equals("sortchest")) {
             if (anonymousCheck(sender)) {
                 return false;
             }
-            if(sortChestInv(sender, trimmedArgs))
-	    {
-		sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
-		return true;
-	    } else {
-		return false;
-	    }
+            if (!InventorySort.Permissions.has((Player)sender, "iSort.basic.chest")) {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest");
+                return true;
+            }
+            if (sortChestInv(sender, trimmedArgs)) {
+                sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
@@ -175,10 +177,6 @@ public class InventorySort extends JavaPlugin {
 
     private boolean sortChestInv(CommandSender sender, String[] split) {
         Player player = (Player) sender;
-        if (!InventorySort.Permissions.has(player, "iSort.basic.chest")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest");
-            return true;
-        }
         TargetBlock hitBlox = new TargetBlock(player);
         Block target = hitBlox.getTargetBlock();
         int intX = target.getX();
@@ -189,17 +187,15 @@ public class InventorySort extends JavaPlugin {
         if (state instanceof Chest) {
             Chest chest1 = (Chest) state;
             Chest chest2 = isDoubleChest(player.getWorld(), block, 1);
-	    if (chest2 != null)
-	    {
-		return sortDblChst(chest1, chest2);
-	    } else {
-		chest2 = isDoubleChest(player.getWorld(), block, -1);
-		if (chest2 != null)
-		{
-		    return sortDblChst(chest2, chest1);
-		}
-	    }
-	    ItemStack[] stack1 = sortItemStack(chest1.getInventory().getContents());
+            if (chest2 != null) {
+                return sortDblChst(chest1, chest2);
+            } else {
+                chest2 = isDoubleChest(player.getWorld(), block, -1);
+                if (chest2 != null) {
+                    return sortDblChst(chest2, chest1);
+                }
+            }
+            ItemStack[] stack1 = sortItemStack(chest1.getInventory().getContents());
             chest1.getInventory().setContents(stack1);
             chest1.update();
         } else {
@@ -208,17 +204,17 @@ public class InventorySort extends JavaPlugin {
         return true;
     }
 
-    private boolean sortDblChst(Chest chest1, Chest chest2){
-	ItemStack[] s1 = chest1.getInventory().getContents();
-	ItemStack[] s2 = chest2.getInventory().getContents();
-	ItemStack[] both = concat(s1, s2);
-	s1 = Arrays.copyOfRange(both, 0, s1.length);
-	s2 = Arrays.copyOfRange(both, s1.length, s1.length+s2.length);
-	chest1.getInventory().setContents(s1);
-	chest2.getInventory().setContents(s2);
-	chest1.update();
-	chest2.update();
-	return true;
+    private boolean sortDblChst(Chest chest1, Chest chest2) {
+        ItemStack[] s1 = chest1.getInventory().getContents();
+        ItemStack[] s2 = chest2.getInventory().getContents();
+        ItemStack[] both = sortItemStack(concat(s1, s2));
+        s1 = Arrays.copyOfRange(both, 0, s1.length);
+        s2 = Arrays.copyOfRange(both, s1.length, s1.length + s2.length);
+        chest1.getInventory().setContents(s1);
+        chest2.getInventory().setContents(s2);
+        chest1.update();
+        chest2.update();
+        return true;
     }
 
     private ItemStack[] concat(ItemStack[] A, ItemStack[] B) {
@@ -286,9 +282,9 @@ public class InventorySort extends JavaPlugin {
         } else {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>");
         }
-	if (InventorySort.Permissions.has(player, "iSort.basic.chest")) {
+        if (InventorySort.Permissions.has(player, "iSort.basic.chest")) {
             sender.sendMessage("Example: " + ChatColor.GREEN + "/sortchest " + ChatColor.WHITE + "- sorts the chest your looking at");
-	} else {
+        } else {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest");
         }
         return true;
