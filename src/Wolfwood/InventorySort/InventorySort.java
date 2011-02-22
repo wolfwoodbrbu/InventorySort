@@ -105,7 +105,7 @@ public class InventorySort extends JavaPlugin {
                 sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
                 return true;
             } else {
-                return false;
+                return true;
             }
         }
         return false;
@@ -198,10 +198,12 @@ public class InventorySort extends JavaPlugin {
             ItemStack[] stack1 = sortItemStack(chest1.getInventory().getContents());
             chest1.getInventory().setContents(stack1);
             chest1.update();
+            return true;
         } else {
             sender.sendMessage("You are not looking at a Chest");
+            return false;
         }
-        return true;
+        
     }
 
     private boolean sortDblChst(Chest chest1, Chest chest2) {
