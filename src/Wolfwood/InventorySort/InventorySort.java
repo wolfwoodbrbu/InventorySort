@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.block.*;
 
 /**
- * @version 1.3.5
+ * @version 1.4
  * @author Wolfwood
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
