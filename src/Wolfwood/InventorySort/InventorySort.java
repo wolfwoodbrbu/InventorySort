@@ -1,17 +1,26 @@
 package Wolfwood.InventorySort;
 
-import Wolfwood.InventorySort.commands.*;
-import com.nijiko.permissions.PermissionHandler;
-import com.nijikokun.bukkit.Permissions.Permissions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEvent;
+import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import Wolfwood.InventorySort.commands.SortChestCommand;
+import Wolfwood.InventorySort.commands.SortCommand;
+
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 /**
  * @version 1.5
@@ -26,12 +35,17 @@ public class InventorySort extends JavaPlugin {
     public static final Logger log = Logger.getLogger("Minecraft");
     public HashMap<Player, Boolean> stackOption = new HashMap<Player, Boolean>();
     private SortPlayerListener playerListener = new SortPlayerListener(this);
+    private Listener Listener = new Listener();
+
 
     public void onEnable() {
-        setupPermissions();
 
         PluginDescriptionFile pdfFile = this.getDescription();
         log.info("[" + pdfFile.getName() + "] version " + pdfFile.getVersion() + " is enabled!");
+        setupPermissions();
+        
+        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Low, this);
+        registerEvents();
 
         commands.put("sort", new SortCommand(this));
         commands.put("sortchest", new SortChestCommand(this));
@@ -54,20 +68,6 @@ public class InventorySort extends JavaPlugin {
         debugees.put(player, value);
     }
 
-    public void setupPermissions() {
-        Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
-
-        if (this.Permissions == null) {
-            if (test != null) {
-                this.Permissions = ((Permissions) test).getHandler();
-            } else {
-                log.warning("Permissions not found, InventorySort will not be enabled!");
-                this.getServer().getPluginManager().disablePlugin(this);
-            }
-        }
-
-    }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
@@ -79,4 +79,36 @@ public class InventorySort extends JavaPlugin {
             return false;
         }
     }
+    private class Listener extends ServerListener {
+
+        public Listener() {
+        }
+
+        @Override
+        public void onPluginEnabled(PluginEvent event) {
+            if(event.getPlugin().getDescription().getName().equals("Permissions")) {
+                InventorySort.Permissions = ((Permissions)event.getPlugin()).Security;
+                log.info("InventorySort Attached plugin to Permissions. Enjoy~");
+            }
+        }
+    }
+    private void registerEvents() {
+        this.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this);
+    }
+    
+    private void setupPermissions() {
+        Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+        if (this.Permissions == null) {
+            if (test != null) {
+                this.getServer().getPluginManager().enablePlugin(test); // This line.
+                this.Permissions = ((Permissions)test).getHandler();
+            } else {
+                log.info("Permission system not detected, defaulting to OP");
+            }
+        }
+    }
+
+
+
 }

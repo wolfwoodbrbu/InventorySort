@@ -5,20 +5,23 @@
 
 package Wolfwood.InventorySort;
 
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerListener;
 
 /**
  *
  * @author Faye
  */
-class SortPlayerListener {
+class SortPlayerListener extends PlayerListener {
     private final InventorySort plugin;
 
     public SortPlayerListener(InventorySort plugin) {
+    	super();
         this.plugin = plugin;
     }
-
-    public void onPlyerLogon(PlayerLoginEvent event) {
+    
+    @Override
+    public void onPlayerJoin(PlayerEvent event) {
         if(!plugin.stackOption.containsKey(event.getPlayer())){
             plugin.stackOption.put(event.getPlayer(), Boolean.FALSE);
         }

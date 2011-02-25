@@ -3,6 +3,7 @@ package Wolfwood.InventorySort;
 import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public abstract class CommandHandler {
     protected final InventorySort plugin;
@@ -42,6 +43,11 @@ public abstract class CommandHandler {
     }
 
     protected static boolean getPermissions(CommandSender sender, String node){
-        return InventorySort.Permissions.has((Player)sender, node);
+    	try{
+    		return InventorySort.Permissions.has((Player)sender, node);
+    	} catch (NullPointerException e) {
+    		InventorySort.log.warning("Permissions not working for InventorySort defaulting to Op");
+			return sender.isOp();
+		}
     }
 }

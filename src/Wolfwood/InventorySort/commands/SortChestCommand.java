@@ -53,11 +53,17 @@ public class SortChestCommand extends CommandHandler {
             Chest chest1 = (Chest) state;
             Chest chest2 = isDoubleChest(player.getWorld(), block, 1);
             if (chest2 != null) {
-                return sortDblChst(chest1, chest2, player);
+                if (sortDblChst(chest1, chest2, player)) {
+            		sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+            		return true;
+				}
             } else {
                 chest2 = isDoubleChest(player.getWorld(), block, -1);
                 if (chest2 != null) {
-                    return sortDblChst(chest2, chest1, player);
+                	if (sortDblChst(chest2, chest1, player)) {
+                		sender.sendMessage(ChatColor.GRAY + "The chest has been sorted.");
+                		return true;
+					} 
                 }
             }
             ItemStack[] stack1 = sort.sortItemStack(chest1.getInventory().getContents(),player);
