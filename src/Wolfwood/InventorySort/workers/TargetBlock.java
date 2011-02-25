@@ -1,4 +1,4 @@
-package Wolfwood.InventorySort;
+package Wolfwood.InventorySort.workers;
 /**
  * This is from the plugin MySignEdit
  */

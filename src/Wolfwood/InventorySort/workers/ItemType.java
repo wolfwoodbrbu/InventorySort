@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package Wolfwood.InventorySort;
+package Wolfwood.InventorySort.workers;
 
 import java.util.Map;
 import java.util.HashMap;
