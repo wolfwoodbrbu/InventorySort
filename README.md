@@ -64,17 +64,21 @@ Change Log:
 ----------
 
 v1.2 - 2/18/2011
+
 + Initial Release to bukkit.org
 
 v1.3 - 2/21/2011
+
 + [Fixed] doublechest detection
 + [Added] /srtc alias for /sortchest
 
 v1.4 - 2/24/2011
+
 + [Removed]TSLPC
 + Works on CraftBukkit 435+
 
 v1.5 - 2/25/2011
+
 + Complete rewrite of the InventorySort to allow for easier expandability.
 + [Fixed] Permissions 2.1 errors
 + Works on CraftBukkit 449+
