@@ -101,21 +101,15 @@ public class SortCommand extends CommandHandler {
 
     private boolean toggleStack(CommandSender sender) {
         Player player = (Player) sender;
-
-
         if (!anonymousCheck(sender)) {
             if (plugin.stackOption.get(player)) {
                 plugin.stackOption.put(player, Boolean.FALSE);
-
-
+                sender.sendMessage(ChatColor.RED + "Stacking is turned off while sorting");
             } else {
                 plugin.stackOption.put(player, Boolean.TRUE);
-
-
+                sender.sendMessage(ChatColor.GREEN + "Stacking is turned on while sorting");
             }
             return true;
-
-
         } else {
             return false;
 
