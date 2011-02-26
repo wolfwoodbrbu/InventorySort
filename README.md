@@ -1,13 +1,11 @@
-InventorySort - Sorts your inventory or the chest your looking at.
-=============
-Version: 1.5
--------
-Download:
---------
+<h1>InventorySort - Sorts your inventory or the chest your looking at.</h1>
+<h2>Version: 1.5</h2>
+
+<h2>Download:</h2>
 - [InventorySortv1.5.zip](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort1.5.zip)
 - [Jar](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort.jar)
-Source:
-------
+
+<h2>Source:</h2>
 - [https://github.com/wolfwoodbrbu/InventorySort](https://github.com/wolfwoodbrbu/InventorySort)
 
 - [Permissions Required](http://forums.bukkit.org/threads/admn-info-permissions-v2-0-revolutionizing-the-group-system.1403/)
@@ -40,7 +38,7 @@ Side Note/Thanks:
 
 The plugin Stacks items first then sorts them. This is based from the stack command in [WorldGuard](http://forums.bukkit.org/threads/sec-worldguard-v3-2-2-protect-areas-block-fire-info-about-4-x-available.790/). This also used the ItemType.java from it.
 
-To get the chest your looking at I'm using TargetBlock.java from the (http://forums.bukkit.org/threads/mech-mysignedit-v1-2.1436/']MySignEdit] plugin.
+To get the chest your looking at I'm using TargetBlock.java from the [MySignEdit](http://forums.bukkit.org/threads/mech-mysignedit-v1-2.1436/) plugin.
 
 I love open-source!
 
@@ -57,8 +55,8 @@ Known Bugs:
 To Do:
 -----
 
-* <del>Sort the same way if either side of a doublechest is targeted.</del>[COLOR=rgb(0, 128, 0)](done)[/COLOR]
-* <del>Permissions and command arguments for the stacking of items not just always stack.</del>[COLOR=rgb(0, 128, 0)](done)[/COLOR]
+* <del>Sort the same way if either side of a doublechest is targeted.</del>(done)
+* <del>Permissions and command arguments for the stacking of items not just always stack.</del>(done)
 * Faster sorting Algorithm.
 * <del>Remove TSLPC</del> (done)
 
