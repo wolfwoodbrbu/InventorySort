@@ -1,4 +1,5 @@
 <h1>InventorySort - Sorts your inventory or the chest your looking at.</h1>
+
 <h2>Version: 1.5</h2>
 
 <h2>Download:</h2>
