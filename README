@@ -1,0 +1,70 @@
+InventorySort - Sorts your inventory or the chest your looking at.
+[B]Version:[/B] 1.5
+[B]Download:[/B] [URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort1.5.zip']InventorySort v1.5.zip [/URL]([URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort.jar']Jar[/URL])
+[B]Previous Versions: [/B][URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.2/InventorySort%20v1.2.zip']v1.2[/URL][URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.3/InventorySort%20v1.3.zip'] v1.3.zip [/URL][URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.4/InventorySort1.4.zip']v1.4.zip[/URL]
+[B]Source:[/B] [URL]https://github.com/wolfwoodbrbu/InventorySort[/URL]
+[URL='http://forums.bukkit.org/threads/admn-info-permissions-v2-0-revolutionizing-the-group-system.1403/'][B]Permissions Required [/B][/URL]
+[URL='http://forums.bukkit.org/threads/admn-info-permissions-v2-0-revolutionizing-the-group-system.1403/'][/URL]Since the Permissions dl's are down here's my latest build of their github repository [URL='http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/Permissions.jar']Permissions 2.1 [/URL]this has no changes made by me in it.
+
+InventorySort also works with Permissions 2.0
+
+InventorySort allows you to sort all or part of your inventory ordered on the block/item TypeId number. You can also sort chests in the same manner.
+
+[B]Commands:[/B]
+[LIST]
+[*][B]/sort all - [/B]Sorts all of the slots in your inventory(slots 0-35)
+[*][B]/sort top - [/B]Sorts the "Backpack" slots of your inventory(slots 9-35)
+[*][B]/sort 4 35 -[/B] Sorts slots 4-35
+[*][B]/sort 30 10 - [/B]Sorts slots 10-35
+[*][B]/sortchest - [/B]Sorts all of the slots in a chest or doublechest (alias: [B]/srtc[/B])
+[*][B]/sort stack - [/B]Toggles whether sorting stack's first (default off) will remember between sessions as long as the server hasn't been restarted.
+[/LIST]
+[B]Permissions:[/B]
+[CODE]iSort.basic.all - /sort all command
+iSort.basic.top - /sort top command
+iSort.basic.range - /sort [0-35] [0-35] command
+iSort.basic.chest - /sortchest command
+iSort.adv.stack - /sort stack command[/CODE]
+
+[B]Side Note/Thanks:[/B]
+
+The plugin Stacks items first then sorts them. This is based from the stack command in [URL='http://forums.bukkit.org/threads/sec-worldguard-v3-2-2-protect-areas-block-fire-info-about-4-x-available.790/']WorldGuard[/URL][B]. [/B]This also used the ItemType.java from it.
+
+To get the chest your looking at I'm using TargetBlock.java from the [URL='http://forums.bukkit.org/threads/mech-mysignedit-v1-2.1436/']MySignEdit[/URL] plugin[B].[/B]
+
+I love open-source[B]![/B]
+
+[B]Known Issues:[/B]
+[LIST]
+[*][S]When sorting a doublechest if you sort the right side of the chest it places the items in the top slots then the bottom slots to fix this right now sort the left chest.[/S][COLOR=rgb(0, 128, 0)](fixed)[/COLOR]
+[/LIST]
+[B]Known Bugs:[/B]
+[LIST]
+[*]([COLOR=rgb(51, 153, 102)]fixed[COLOR=rgb(0, 0, 0)]) [S]Permission's 2.1 bug with commandhandler null error[/S]
+  [/COLOR][/COLOR]
+[/LIST]
+[B]To Do:[/B]
+[LIST]
+[*][S]Sort the same way if either side of a doublechest is targeted.[/S][COLOR=rgb(0, 128, 0)](done)[/COLOR]
+[*][S]Permissions and command arguments for the stacking of items not just always stack.[/S][COLOR=rgb(0, 128, 0)](done)[/COLOR]
+[*]Faster sorting Algorithm.
+[*][S]Remove TSLPC[/S] [COLOR=rgb(51, 153, 102)](done)[/COLOR]
+[/LIST]
+[B]Change Log[/B]:
+
+v1.2 - 2/18/2011
++Initial Release to bukkit.org
+
+v1.3 - 2/21/2011
++[Fixed] doublechest detection
++[Added] [B]/srtc [/B]alias for [B]/sortchest[/B]
+
+v1.4 - 2/24/2011
++[Removed]TSLPC
++Works on CraftBukkit 435+
+
+v1.5 - 2/25/2011
++Complete rewrite of the InventorySort to allow for easier expandability.
++[Fixed] Permissions 2.1 errors
++Works on CraftBukkit 449+
++[Added] [B]/sort stack [/B]command to toggle stacking
