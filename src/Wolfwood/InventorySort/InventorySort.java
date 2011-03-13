@@ -40,7 +40,6 @@ public class InventorySort extends JavaPlugin
     public HashMap<Player, Boolean> stackOption = new HashMap<Player, Boolean>();
     private SortPlayerListener playerListener = new SortPlayerListener( this );
     private SortBlockListener blockListener = new SortBlockListener( this );
-    // private Listener Listener = new Listener();
     public static WorldsHolder wd;
 
     public void onEnable()
@@ -122,22 +121,6 @@ public class InventorySort extends JavaPlugin
         }
     }
 
-//    private class Listener extends ServerListener {
-//
-//        public Listener() {
-//        }
-//
-//        @Override
-//        public void onPluginEnabled(PluginEvent event) {
-//            if (event.getPlugin().getDescription().getName().equals("Permissions")) {
-//                InventorySort.Permissions = ((Permissions) event.getPlugin()).Security;
-//                log.info(Constants.B_PluginName + " Attached plugin to Permissions. Enjoy~");
-//            }
-//        }
-//    }
-//    private void registerEvents() {
-//        this.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this);
-//    }
     private void setupPermissions()
     {
 

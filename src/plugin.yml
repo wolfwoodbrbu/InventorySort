@@ -5,7 +5,7 @@ author: Wolfwood
 commands:
   sort:
     description:  Sort of your inventory.
-    usage: /<command> [top|all|0-35|stack] [0-35]
+    usage: /<command> [top|all|0-35|stack|reload] [0-35]
   sortchest:
     description:  Sorts the chest your looking at.
     usage: /<command>
