@@ -1,0 +1,16 @@
+Stack:
+  Deafult:
+    Enabled: false
+  Toggle:
+    Enabled: true
+  Tools:
+    Enabled: false
+  Armor:
+    Enabled: false
+Chest:
+  Wand: 280
+# Users Automatically Added
+Users:
+  demonspork:
+    Stack: true
+    
