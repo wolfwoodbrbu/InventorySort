@@ -24,10 +24,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.dataholder.worlds.WorldsHolder;
+import org.bukkit.event.server.PluginEvent;
+import org.bukkit.event.server.ServerListener;
 import org.bukkit.util.config.Configuration;
 
 /**
- * @version 1.6
+ * @version 1.6.2
  * @author Wolfwood AKA Faye AKA needs to get a female call now that I'm transistioning
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -142,12 +144,18 @@ public class InventorySort extends JavaPlugin
             if ( p != null )
             {
                 Permissions = (( Permissions ) p).getHandler();
+                String Pver = p.getDescription().getVersion();
+                if ( Pver.equalsIgnoreCase( "1.0" ) )
+                {
+                    registerEvents();
+                }
             } else
             {
                 log.info( "No permissions system not detected, disabling [InventorySort]." );
                 this.getPluginLoader().disablePlugin( this );
             }
         }
+        log.info( Constants.B_PluginName + " Using [" + p.getDescription().getName() + " v" + p.getDescription().getVersion() + "] for Permissions." );
     }
 
     public void loadConfig()
@@ -211,5 +219,28 @@ public class InventorySort extends JavaPlugin
                 }
             }
         }
+    }
+    private Listener Listener = new Listener();
+
+    private class Listener extends ServerListener
+    {
+        public Listener()
+        {
+        }
+
+        @Override
+        public void onPluginEnabled( PluginEvent event )
+        {
+            if ( event.getPlugin().getDescription().getName().equals( "Permissions" ) )
+            {
+                InventorySort.Permissions = (( Permissions ) event.getPlugin()).Security;
+                log.info( Constants.B_PluginName + " Attached plugin to Permissions. Enjoy~" );
+            }
+        }
+    }
+
+    private void registerEvents()
+    {
+        this.getServer().getPluginManager().registerEvent( Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this );
     }
 }

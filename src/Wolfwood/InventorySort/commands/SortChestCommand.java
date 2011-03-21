@@ -32,7 +32,7 @@ public class SortChestCommand extends CommandHandler
     @Override
     public boolean perform( CommandSender sender, String[] args )
     {
-        if ( !getPermissions( sender, "iSort.basic.chest" ) )
+        if ( !getPermissions( sender, "iSort.basic.chest.command" ) )
         {
             sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest" );
             return true;

@@ -1,10 +1,10 @@
 <h1>InventorySort - Sorts your inventory or the chest your looking at.</h1>
 
-<h2>Version: 1.5</h2>
+<h2>Version: 1.6.1</h2>
 
 <h2>Download:</h2>
-- [InventorySortv1.5.zip](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort1.5.zip)
-- [Jar](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.5/InventorySort.jar)
+- [InventorySort.zip](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/1.6.1/InventorySort.zip)
+- [Jar](http://dl.dropbox.com/u/4299882/Minecraft/InventorySort/StaticUTDjar/InventorySort.jar)
 
 <h2>Source:</h2>
 - [https://github.com/wolfwoodbrbu/InventorySort](https://github.com/wolfwoodbrbu/InventorySort)
