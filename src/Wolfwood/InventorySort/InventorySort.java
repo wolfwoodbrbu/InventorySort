@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,12 +25,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.dataholder.worlds.WorldsHolder;
-import org.bukkit.event.server.PluginEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.util.config.Configuration;
 
 /**
- * @version 1.6.2
+ * @version 1.8
  * @author Wolfwood AKA Faye AKA needs to get a female call now that I'm transistioning
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -49,7 +50,7 @@ public class InventorySort extends JavaPlugin
 
         PluginDescriptionFile pdfFile = this.getDescription();
 
-        Constants.B_PluginName = "[" + pdfFile.getName() + "]";
+        Constants.B_PluginName = "[" + ChatColor.GREEN + pdfFile.getName() + ChatColor.WHITE + "]";
 
         try
         {
@@ -75,16 +76,20 @@ public class InventorySort extends JavaPlugin
         // Configuration
         loadConfig();
 
-        setupPermissions();
-
+        if ( !setupPermissions() )
+        {
+           Constants.loadInternalPermissions(); 
+        }
+        
         this.getServer().getPluginManager().registerEvent( Event.Type.PLAYER_JOIN, playerListener, Priority.Low, this );
-        this.getServer().getPluginManager().registerEvent( Event.Type.BLOCK_DAMAGED, blockListener, Priority.High, this );
-//        registerEvents();
+        this.getServer().getPluginManager().registerEvent( Event.Type.BLOCK_DAMAGE, blockListener, Priority.High, this );
 
         commands.put( "sort", new SortCommand( this ) );
         commands.put( "sortchest", new SortChestCommand( this ) );
 
         log.info( Constants.B_PluginName + " version " + pdfFile.getVersion() + " is enabled!" );
+
+
     }
 
     public void onDisable()
@@ -123,7 +128,7 @@ public class InventorySort extends JavaPlugin
         }
     }
 
-    private void setupPermissions()
+    private boolean setupPermissions()
     {
 
 
@@ -151,11 +156,13 @@ public class InventorySort extends JavaPlugin
                 }
             } else
             {
-                log.info( "No permissions system not detected, disabling [InventorySort]." );
-                this.getPluginLoader().disablePlugin( this );
+            	Permissions = null;
+                log.info( Constants.B_PluginName + " Using Config's Permissions for Permissions." );
+                return false;
             }
         }
         log.info( Constants.B_PluginName + " Using [" + p.getDescription().getName() + " v" + p.getDescription().getVersion() + "] for Permissions." );
+        return true;
     }
 
     public void loadConfig()
@@ -229,7 +236,7 @@ public class InventorySort extends JavaPlugin
         }
 
         @Override
-        public void onPluginEnabled( PluginEvent event )
+        public void onPluginEnable( PluginEnableEvent event )
         {
             if ( event.getPlugin().getDescription().getName().equals( "Permissions" ) )
             {

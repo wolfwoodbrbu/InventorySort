@@ -54,7 +54,7 @@ public abstract class CommandHandler
         }
     }
 
-    protected static boolean getPermissions( CommandSender sender, String node )
+    protected static boolean getPermissions( CommandSender sender, String node, boolean OpOnly )
     {
         Player player = ( Player ) sender;
         try
@@ -62,9 +62,15 @@ public abstract class CommandHandler
             if ( InventorySort.wd != null )
             {
                 return InventorySort.wd.getWorldPermissions( player ).has( player, node );
-            } else
+            } else if(InventorySort.Permissions != null)
             {
                 return InventorySort.Permissions.has( player, node );
+            } else
+            {
+            	if (OpOnly) {
+            		return sender.isOp();
+				}
+            	return true;
             }
         } catch ( NullPointerException e )
         {

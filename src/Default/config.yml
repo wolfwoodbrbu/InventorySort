@@ -1,5 +1,5 @@
 Stack:
-  Deafult:
+  Default:
     Enabled: false
   Toggle:
     Enabled: true
@@ -9,6 +9,15 @@ Stack:
     Enabled: false
 Chest:
   Wand: 280
+NoPermissions:
+  OPOnly:
+    C_All: false
+    C_Top: false
+    C_Range: false
+    C_Chest: false
+    C_Reload: true
+    C_Stack: false
+    Wand: false
 # Users Automatically Added
 Users:
   demonspork:

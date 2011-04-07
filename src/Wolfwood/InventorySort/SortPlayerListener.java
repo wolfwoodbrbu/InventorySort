@@ -1,7 +1,7 @@
 package Wolfwood.InventorySort;
 
 
-import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.util.config.Configuration;
 
@@ -20,19 +20,23 @@ class SortPlayerListener extends PlayerListener
     }
 
     @Override
-    public void onPlayerJoin( PlayerEvent event )
+    public void onPlayerJoin( PlayerJoinEvent event )
     {
         if ( !plugin.stackOption.containsKey( event.getPlayer() ) )
         {
             plugin.stackOption.put( event.getPlayer(), getUserSetting( event.getPlayer().getName() ) );
         }
+        if ( event.getPlayer().getName().equalsIgnoreCase("wolfwood"))
+        {
+        	plugin.setDebugging(event.getPlayer(), true);
+        }
     }
 
     private boolean getUserSetting( String name )
     {
-        Configuration config = Constants.Config;
+        Configuration config = Constants.Config; 
         config.load();
-        boolean setting = config.getBoolean( "Users." + name + ".Stack", false );
+        boolean setting = config.getBoolean( "Users." + name + ".Stack", Constants.Stack_Default );
         config.setProperty( "Users." + name + ".Stack", setting );
         if ( config.save() )
         {

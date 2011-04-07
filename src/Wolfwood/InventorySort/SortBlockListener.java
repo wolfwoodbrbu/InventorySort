@@ -21,7 +21,7 @@ class SortBlockListener extends BlockListener
     public SortBlockListener( InventorySort plugin )
     {
         this.plugin = plugin;
-        sort = new Sort( plugin );
+        sort = new Sort( this.plugin );
         CW = new ChestWorker( sort );
     }
 
@@ -37,7 +37,7 @@ class SortBlockListener extends BlockListener
                 player.sendMessage( ChatColor.GRAY + "The chest has been sorted." );
             } else
             {
-                player.sendMessage( "That is not a Chest" );
+                //player.sendMessage( "That is not a Chest" );
             }
         }
     }
@@ -50,9 +50,15 @@ class SortBlockListener extends BlockListener
             if ( InventorySort.wd != null )
             {
                 return InventorySort.wd.getWorldPermissions( player ).has( player, node );
-            } else
+            } else if(InventorySort.Permissions != null)
             {
                 return InventorySort.Permissions.has( player, node );
+            } else
+            {
+            	if (Constants.Op_Wand) {
+            		return player.isOp();
+				}
+            	return true;
             }
         } catch ( NullPointerException e )
         {

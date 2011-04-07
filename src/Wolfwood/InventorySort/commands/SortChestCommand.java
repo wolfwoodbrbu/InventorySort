@@ -2,6 +2,7 @@ package Wolfwood.InventorySort.commands;
 
 
 import Wolfwood.InventorySort.CommandHandler;
+import Wolfwood.InventorySort.Constants;
 import Wolfwood.InventorySort.InventorySort;
 import Wolfwood.InventorySort.workers.ChestWorker;
 import Wolfwood.InventorySort.workers.Sort;
@@ -32,7 +33,7 @@ public class SortChestCommand extends CommandHandler
     @Override
     public boolean perform( CommandSender sender, String[] args )
     {
-        if ( !getPermissions( sender, "iSort.basic.chest.command" ) )
+        if ( !getPermissions( sender, "iSort.basic.chest.command", Constants.Op_Chest ) )
         {
             sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sortchest" );
             return true;
