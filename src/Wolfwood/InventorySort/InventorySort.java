@@ -30,7 +30,7 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.util.config.Configuration;
 
 /**
- * @version 1.8
+ * @version 1.9.2
  * @author Wolfwood AKA Faye AKA needs to get a female call now that I'm transistioning
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
@@ -235,7 +235,8 @@ public class InventorySort extends JavaPlugin
         {
         }
 
-        @Override
+        @SuppressWarnings("static-access")
+		@Override
         public void onPluginEnable( PluginEnableEvent event )
         {
             if ( event.getPlugin().getDescription().getName().equals( "Permissions" ) )

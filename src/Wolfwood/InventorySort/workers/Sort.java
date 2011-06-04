@@ -98,12 +98,6 @@ public class Sort
     private void swap( ItemStack[] list, int first, int second )
     {
         ItemStack temp;
-        if ( Constants.Debug )
-        {
-            Constants.log.info( Constants.B_PluginName + " first = " + first + " second = " + second );
-            Constants.log.info( Constants.B_PluginName + " Swaping " + list[first].toString() + " with " + list[second].toString() + "." );
-        }
-
         temp = list[first];
         list[first] = list[second];
         list[second] = temp;
@@ -121,11 +115,14 @@ public class Sort
         public int compareTo( ItemStack check )
         {
             // Type ID first
-            if ( Constants.Debug )
-            {
-                Constants.log.info( Constants.B_PluginName + "Comparing " + item.toString() + " to " + check.toString() );
-            }
-            if ( item.getTypeId() > check.getTypeId() )
+        	if(item == null && check != null)
+        	{
+        		return -1;
+        	} else if (item != null && check == null) {
+				return 1;
+			} else if (item == null && check == null) {
+				return 0;
+			} else if ( item.getTypeId() > check.getTypeId() )
             {
                 return 1;
             } else if ( item.getTypeId() < check.getTypeId() )
