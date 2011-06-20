@@ -388,15 +388,14 @@ public enum ItemType
                 || (id >= 267 && id <= 279)
                 || (id >= 281 && id <= 286)
                 || (id >= 290 && id <= 294)
-                || id == 346		// Fishing Rod
-                || id == 358) )		// Map
+                || id == 346) )
         {
             return true;
         } else if ( !Constants.Stack_Armor && (id >= 298 && id <= 317) )
         {
             return true;
         }
-        return (id >= 325 && id <= 327) || id == 335;
+        return (id >= 325 && id <= 327) || id == 335 || id == 358;
     }
 
     /**
