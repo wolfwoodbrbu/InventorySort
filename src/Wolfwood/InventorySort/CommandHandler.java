@@ -54,7 +54,7 @@ public abstract class CommandHandler
         }
     }
 
-    protected static boolean getPermissions( CommandSender sender, String node, boolean OpOnly )
+    protected static boolean getPermissions( CommandSender sender, String node )
     {
         Player player = ( Player ) sender;
         try
@@ -67,10 +67,7 @@ public abstract class CommandHandler
                 return InventorySort.Permissions.has( player, node );
             } else
             {
-            	if (OpOnly) {
-            		return sender.isOp();
-				}
-            	return true;
+            	return player.hasPermission( node );
             }
         } catch ( NullPointerException e )
         {

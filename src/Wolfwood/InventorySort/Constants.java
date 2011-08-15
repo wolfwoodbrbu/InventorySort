@@ -61,32 +61,4 @@ public class Constants
 
     }
     
-    public static void loadInternalPermissions() {
-    	Configuration config = Config;
-    	config.load();
-    	
-    	Op_All = config.getBoolean("NoPermissions.OPOnly.C_All", Op_All);
-    	config.setProperty("NoPermissions.OPOnly.C_All", Op_All);
-    	
-    	Op_Top = config.getBoolean("NoPermissions.OPOnly.C_Top", Op_Top);
-    	config.setProperty("NoPermissions.OPOnly.C_Top", Op_Top);
-    	
-    	Op_Range = config.getBoolean("NoPermissions.OPOnly.C_Range", Op_Range);
-    	config.setProperty("NoPermissions.OPOnly.C_Range", Op_Range);
-    	
-    	Op_Chest = config.getBoolean("NoPermissions.OPOnly.C_Chest", Op_Chest);
-    	config.setProperty("NoPermissions.OPOnly.C_Chest", Op_Chest);
-    	
-    	Op_Reload = config.getBoolean("NoPermissions.OPOnly.C_Reload", Op_Reload);
-    	config.setProperty("NoPermissions.OPOnly.C_Reload", Op_Reload);
-    	
-    	Op_Wand = config.getBoolean("NoPermissions.OPOnly.Wand", Op_Wand);
-    	config.setProperty("NoPermissions.OPOnly.Wand", Op_Wand);
-    	
-    	Op_Stack = config.getBoolean("NoPermissions.OPOnly.C_Stack", Op_Stack);
-    	config.setProperty("NoPermissions.OPOnly.C_Stack", Op_Stack);
-    	
-    	config.save();
-		
-	}
 }

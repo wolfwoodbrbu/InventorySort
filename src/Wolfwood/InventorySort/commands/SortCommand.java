@@ -24,7 +24,7 @@ public class SortCommand extends CommandHandler
     public SortCommand( InventorySort plugin )
     {
         super( plugin );
-        help = new SortHelp( plugin );
+        help = new SortHelp( );
         sort = new Sort( plugin );
     }
 
@@ -40,14 +40,14 @@ public class SortCommand extends CommandHandler
                 String what = args[0];
                 if ( what.equalsIgnoreCase( "all" ) )
                 {
-                    if ( !getPermissions( sender, "iSort.basic.all", Constants.Op_All ) )
+                    if ( !getPermissions( sender, "iSort.basic.all" ) )
                     {
                         sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort all" );
                         return true;
                     }
                 } else if ( what.equalsIgnoreCase( "top" ) )
                 {
-                    if ( !getPermissions( sender, "iSort.basic.top", Constants.Op_Top ) )
+                    if ( !getPermissions( sender, "iSort.basic.top" ) )
                     {
                         sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort top" );
                         return true;
@@ -56,7 +56,7 @@ public class SortCommand extends CommandHandler
                     start = 9;
                 } else if ( what.equalsIgnoreCase( "stack" ) && Constants.Stack_Toggle )
                 {
-                    if ( !getPermissions( sender, "iSort.adv.stack",  Constants.Op_Stack) )
+                    if ( !getPermissions( sender, "iSort.adv.stack") )
                     {
                         sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort stack" );
                         return true;
@@ -64,7 +64,7 @@ public class SortCommand extends CommandHandler
                     return toggleStack( sender );
                 } else if ( what.equalsIgnoreCase( "reload" ) )
                 {
-                    if ( !getPermissions( sender, "iSort.adv.reload", Constants.Op_Reload) )
+                    if ( !getPermissions( sender, "iSort.adv.reload") )
                     {
                         sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort reload" );
                         return true;
@@ -79,7 +79,7 @@ public class SortCommand extends CommandHandler
                 }
                 break;
             case 2:
-                if ( !getPermissions( sender, "iSort.basic.range", Constants.Op_Range ) )
+                if ( !getPermissions( sender, "iSort.basic.range") )
                 {
                     sender.sendMessage( ChatColor.RED + "You do not have permission to run " + ChatColor.GREEN + "/sort <0-35> <0-35>" );
                     return true;

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,7 +49,7 @@ public class InventorySort extends JavaPlugin
 
         PluginDescriptionFile pdfFile = this.getDescription();
 
-        Constants.B_PluginName = "[" + ChatColor.GREEN + pdfFile.getName() + ChatColor.WHITE + "]";
+        Constants.B_PluginName = "[§a" + pdfFile.getName() + "§f]";
 
         try
         {
@@ -78,7 +77,7 @@ public class InventorySort extends JavaPlugin
 
         if ( !setupPermissions() )
         {
-           Constants.loadInternalPermissions(); 
+           log.info( Constants.B_PluginName + "Using Bukkit's SuperPerms for permissions. See Plugin's page for nodes."); 
         }
         
         this.getServer().getPluginManager().registerEvent( Event.Type.PLAYER_JOIN, playerListener, Priority.Low, this );
@@ -145,8 +144,8 @@ public class InventorySort extends JavaPlugin
         {
             wd = null;
             p = this.getServer().getPluginManager().getPlugin( "Permissions" );
-
-            if ( p != null )
+            
+            if ( p != null && !(p.getDescription().getVersion().startsWith("2.7.7")))
             {
                 Permissions = (( Permissions ) p).getHandler();
                 String Pver = p.getDescription().getVersion();
@@ -157,7 +156,6 @@ public class InventorySort extends JavaPlugin
             } else
             {
             	Permissions = null;
-                log.info( Constants.B_PluginName + " Using Config's Permissions for Permissions." );
                 return false;
             }
         }
