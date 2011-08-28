@@ -1,6 +1,6 @@
 name: InventorySort
 main: Wolfwood.InventorySort.InventorySort
-version: 2.0
+version: 2.0.1
 author: Wolfwood
 commands:
   sort:
@@ -13,22 +13,22 @@ commands:
 permissions:
   iSort.basic.all:
     description: Allows for the /sort all command.
-    default: false
+    default: op
   iSort.basic.top:
     description: Allows for the /sort top command.
-    default: false
+    default: op
   iSort.basic.range:
     description: Allows for /sort <0-35> <0-35> command.
-    default: false
+    default: op
   iSort.basic.chest.command:
     description: Allows for the /sortchest and /srtc commands.
-    default: false
+    default: op
   iSort.basic.chest.wand:
     description: Allows use of the wand to sort chests.
-    default: false
+    default: op
   iSort.adv.stack:
     description: Allows the toggling automatic stacking using the /sort stack command.
-    default: false
+    default: op
   iSort.adv.reload:
     description: Allows one to reload the config file with the /sort reload command
     default: op
