@@ -1,6 +1,5 @@
 package Wolfwood.InventorySort;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -33,193 +32,155 @@ import org.bukkit.util.config.Configuration;
  * @author Faye Bickerton AKA VeraLapsa
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
-public class InventorySort extends JavaPlugin
-{
+public class InventorySort extends JavaPlugin {
+
     public static PermissionHandler Permissions;
     private final Map<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private Map<String, CommandHandler> commands = new HashMap<String, CommandHandler>();
     public static final Logger log = Constants.log;
-    public HashMap<Player, Boolean> stackOption = new HashMap<Player, Boolean>();
-    private SortPlayerListener playerListener = new SortPlayerListener( this );
-    private SortBlockListener blockListener = new SortBlockListener( this );
+    public HashMap<String, Boolean> stackOption = new HashMap<String, Boolean>();
+    private SortBlockListener blockListener = new SortBlockListener(this);
     public static WorldsHolder wd;
 
-    public void onEnable()
-    {
+    public void onEnable() {
 
         PluginDescriptionFile pdfFile = this.getDescription();
 
-        Constants.B_PluginName = "[§a" + pdfFile.getName() + "§f]";
+        Constants.B_PluginName = "[" + pdfFile.getName() + "]";
 
-        try
-        {
-            if ( !getDataFolder().exists() )
-            {
+        try {
+            if (!getDataFolder().exists()) {
                 getDataFolder().mkdir();
             }
-        } catch ( Exception e )
-        {
-            System.out.println( Constants.B_PluginName + " Could not create directory!" );
-            System.out.println( Constants.B_PluginName + " You must manually make the InventorySort/ directory!" );
+        } catch (Exception e) {
+            System.out.println(Constants.B_PluginName + " Could not create directory!");
+            System.out.println(Constants.B_PluginName + " You must manually make the InventorySort/ directory!");
         }
 
         // Make sure we can read / write
-        getDataFolder().setWritable( true );
-        getDataFolder().setExecutable( true );
+        getDataFolder().setWritable(true);
+        getDataFolder().setExecutable(true);
 
         // Directory
         Constants.Plugin_Directory = getDataFolder().getPath();
 
-        setupDefaultFile( "config.yml" );
+        setupDefaultFile("config.yml");
 
         // Configuration
         loadConfig();
 
-        if ( !setupPermissions() )
-        {
-           log.info( Constants.B_PluginName + "Using Bukkit's SuperPerms for permissions. See Plugin's page for nodes."); 
+        if (!setupPermissions()) {
+            log.info(Constants.B_PluginName + "Using Bukkit's SuperPerms for permissions. See Plugin's page for nodes.");
         }
-        
-        this.getServer().getPluginManager().registerEvent( Event.Type.PLAYER_JOIN, playerListener, Priority.Low, this );
-        this.getServer().getPluginManager().registerEvent( Event.Type.BLOCK_DAMAGE, blockListener, Priority.High, this );
 
-        commands.put( "sort", new SortCommand( this ) );
-        commands.put( "sortchest", new SortChestCommand( this ) );
+        this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.High, this);
 
-        log.info( Constants.B_PluginName + " version " + pdfFile.getVersion() + " is enabled!" );
+        commands.put("sort", new SortCommand(this));
+        commands.put("sortchest", new SortChestCommand(this));
+
+        log.info(Constants.B_PluginName + " version " + pdfFile.getVersion() + " is enabled!");
 
 
     }
 
-    public void onDisable()
-    {
+    public void onDisable() {
         PluginDescriptionFile pdfFile = this.getDescription();
-        log.info( Constants.B_PluginName + " version " + pdfFile.getVersion() + " is disabled!" );
+        log.info(Constants.B_PluginName + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
-    public boolean isDebugging( final Player player )
-    {
-        if ( debugees.containsKey( player ) )
-        {
-            return debugees.get( player ) != null;
-        } else
-        {
+    public boolean isDebugging(final Player player) {
+        if (debugees.containsKey(player)) {
+            return debugees.get(player) != null;
+        } else {
             return false;
         }
     }
 
-    public void setDebugging( final Player player, final boolean value )
-    {
-        debugees.put( player, value );
+    public void setDebugging(final Player player, final boolean value) {
+        debugees.put(player, value);
     }
 
     @Override
-    public boolean onCommand( CommandSender sender, Command command, String commandLabel, String[] args )
-    {
-        CommandHandler handler = commands.get( command.getName().toLowerCase() );
+    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+        CommandHandler handler = commands.get(command.getName().toLowerCase());
 
-        if ( handler != null )
-        {
-            return handler.perform( sender, args );
-        } else
-        {
+        if (handler != null) {
+            return handler.perform(sender, args);
+        } else {
             return false;
         }
     }
 
-    private boolean setupPermissions()
-    {
+    private boolean setupPermissions() {
 
 
-        Plugin p = this.getServer().getPluginManager().getPlugin( "GroupManager" );
-        if ( p != null )
-        {
-            if ( !this.getServer().getPluginManager().isPluginEnabled( p ) )
-            {
-                this.getServer().getPluginManager().enablePlugin( p );
+        Plugin p = this.getServer().getPluginManager().getPlugin("GroupManager");
+        if (p != null) {
+            if (!this.getServer().getPluginManager().isPluginEnabled(p)) {
+                this.getServer().getPluginManager().enablePlugin(p);
             }
-            GroupManager gm = ( GroupManager ) p;
+            GroupManager gm = (GroupManager) p;
             wd = gm.getWorldsHolder();
-        } else
-        {
+        } else {
             wd = null;
-            p = this.getServer().getPluginManager().getPlugin( "Permissions" );
-            
-            if ( p != null && !(p.getDescription().getVersion().startsWith("2.7.7")))
-            {
-                Permissions = (( Permissions ) p).getHandler();
+            p = this.getServer().getPluginManager().getPlugin("Permissions");
+
+            if (p != null && !(p.getDescription().getVersion().startsWith("2.7.7"))) {
+                Permissions = ((Permissions) p).getHandler();
                 String Pver = p.getDescription().getVersion();
-                if ( Pver.equalsIgnoreCase( "1.0" ) )
-                {
+                if (Pver.equalsIgnoreCase("1.0")) {
                     registerEvents();
                 }
-            } else
-            {
-            	Permissions = null;
+            } else {
+                Permissions = null;
                 return false;
             }
         }
-        log.info( Constants.B_PluginName + " Using [" + p.getDescription().getName() + " v" + p.getDescription().getVersion() + "] for Permissions." );
+        log.info(Constants.B_PluginName + " Using [" + p.getDescription().getName() + " v" + p.getDescription().getVersion() + "] for Permissions.");
         return true;
     }
 
-    public void loadConfig()
-    {
-        try
-        {
-            Constants.load( new Configuration( new File( getDataFolder(), "config.yml" ) ) );
-        } catch ( Exception e )
-        {
-            log.warning( Constants.B_PluginName + " Failed to retrieve configuration from directory. Using defaults." );
+    public void loadConfig() {
+        try {
+            Constants.load(new Configuration(new File(getDataFolder(), "config.yml")));
+        } catch (Exception e) {
+            log.warning(Constants.B_PluginName + " Failed to retrieve configuration from directory. Using defaults.");
         }
     }
 
-    private void setupDefaultFile( String name )
-    {
-        File actual = new File( getDataFolder(), name );
-        if ( !actual.exists() )
-        {
+    private void setupDefaultFile(String name) {
+        File actual = new File(getDataFolder(), name);
+        if (!actual.exists()) {
 
-            InputStream input = this.getClass().getResourceAsStream( "/Default/" + name );
-            if ( input != null )
-            {
+            InputStream input = this.getClass().getResourceAsStream("/Default/" + name);
+            if (input != null) {
                 FileOutputStream output = null;
 
-                try
-                {
-                    output = new FileOutputStream( actual );
-                    byte[] buf = new byte[ 8192 ];
+                try {
+                    output = new FileOutputStream(actual);
+                    byte[] buf = new byte[8192];
                     int length = 0;
 
-                    while ( (length = input.read( buf )) > 0 )
-                    {
-                        output.write( buf, 0, length );
+                    while ((length = input.read(buf)) > 0) {
+                        output.write(buf, 0, length);
                     }
 
-                    System.out.println( Constants.B_PluginName + " Default setup file written: " + name );
-                } catch ( Exception e )
-                {
+                    System.out.println(Constants.B_PluginName + " Default setup file written: " + name);
+                } catch (Exception e) {
                     e.printStackTrace();
-                } finally
-                {
-                    try
-                    {
-                        if ( input != null )
-                        {
+                } finally {
+                    try {
+                        if (input != null) {
                             input.close();
                         }
-                    } catch ( Exception e )
-                    {
+                    } catch (Exception e) {
                     }
 
-                    try
-                    {
-                        if ( output != null )
-                        {
+                    try {
+                        if (output != null) {
                             output.close();
                         }
-                    } catch ( Exception e )
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -227,26 +188,22 @@ public class InventorySort extends JavaPlugin
     }
     private Listener Listener = new Listener();
 
-    private class Listener extends ServerListener
-    {
-        public Listener()
-        {
+    private class Listener extends ServerListener {
+
+        public Listener() {
         }
 
         @SuppressWarnings("static-access")
-		@Override
-        public void onPluginEnable( PluginEnableEvent event )
-        {
-            if ( event.getPlugin().getDescription().getName().equals( "Permissions" ) )
-            {
-                InventorySort.Permissions = (( Permissions ) event.getPlugin()).Security;
-                log.info( Constants.B_PluginName + " Attached plugin to Permissions. Enjoy~" );
+        @Override
+        public void onPluginEnable(PluginEnableEvent event) {
+            if (event.getPlugin().getDescription().getName().equals("Permissions")) {
+                InventorySort.Permissions = ((Permissions) event.getPlugin()).Security;
+                log.info(Constants.B_PluginName + " Attached plugin to Permissions. Enjoy~");
             }
         }
     }
 
-    private void registerEvents()
-    {
-        this.getServer().getPluginManager().registerEvent( Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this );
+    private void registerEvents() {
+        this.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this);
     }
 }
