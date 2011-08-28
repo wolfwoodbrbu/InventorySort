@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- *
- * @author Faye
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 public class ChestWorker
 {

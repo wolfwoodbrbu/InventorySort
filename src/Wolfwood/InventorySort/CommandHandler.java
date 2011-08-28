@@ -5,6 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
+ */
+
 public abstract class CommandHandler
 {
     protected final InventorySort plugin;

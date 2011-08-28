@@ -4,6 +4,11 @@ package Wolfwood.InventorySort;
 import java.util.logging.Logger;
 import org.bukkit.util.config.Configuration;
 
+/**
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
+ */
+
 public class Constants
 {
     public static Configuration Config;

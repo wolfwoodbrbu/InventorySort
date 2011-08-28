@@ -23,11 +23,10 @@ import Wolfwood.InventorySort.Constants;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
-
 /**
  * ItemType types.
  *
- * @author sk89q
+ * @author sk89q modded by Faye Bickerton AKA VeraLapsa
  */
 public enum ItemType
 {

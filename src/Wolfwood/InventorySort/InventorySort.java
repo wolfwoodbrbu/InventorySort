@@ -29,8 +29,8 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.util.config.Configuration;
 
 /**
- * @version 1.9.2
- * @author Wolfwood AKA Faye AKA needs to get a female call now that I'm transistioning
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 // this plugin need's the permission's jar and the bukkit snapshot jar
 public class InventorySort extends JavaPlugin

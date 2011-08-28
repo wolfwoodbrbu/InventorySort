@@ -9,8 +9,8 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 
 /**
- *
- * @author Faye
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 class SortBlockListener extends BlockListener
 {

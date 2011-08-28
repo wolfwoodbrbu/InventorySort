@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.config.Configuration;
 
 /**
- *
- * @author Faye
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 public class SortCommand extends CommandHandler
 {

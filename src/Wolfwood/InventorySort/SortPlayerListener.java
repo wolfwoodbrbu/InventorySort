@@ -6,8 +6,8 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.util.config.Configuration;
 
 /**
- *
- * @author Faye
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 class SortPlayerListener extends PlayerListener
 {

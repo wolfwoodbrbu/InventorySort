@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- *
- * @author Faye
+ * @version 2.0
+ * @author Faye Bickerton AKA VeraLapsa
  */
 public class SortHelp
 {
