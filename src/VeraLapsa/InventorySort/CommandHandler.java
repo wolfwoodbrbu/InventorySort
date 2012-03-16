@@ -1,4 +1,4 @@
-package Wolfwood.InventorySort;
+package VeraLapsa.InventorySort;
 
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package Wolfwood.InventorySort.workers;
+package VeraLapsa.InventorySort.workers;
 
-import Wolfwood.InventorySort.Constants;
-import Wolfwood.InventorySort.InventorySort;
+import VeraLapsa.InventorySort.Constants;
+import VeraLapsa.InventorySort.InventorySort;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

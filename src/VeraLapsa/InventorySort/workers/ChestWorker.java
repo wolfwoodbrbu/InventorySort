@@ -1,7 +1,7 @@
-package Wolfwood.InventorySort.workers;
+package VeraLapsa.InventorySort.workers;
 
 
-import Wolfwood.InventorySort.Constants;
+import VeraLapsa.InventorySort.Constants;
 import java.util.Arrays;
 import org.bukkit.World;
 import org.bukkit.block.Block;

@@ -1,11 +1,11 @@
-package Wolfwood.InventorySort.commands;
+package VeraLapsa.InventorySort.commands;
 
-import Wolfwood.InventorySort.CommandHandler;
-import Wolfwood.InventorySort.Constants;
-import Wolfwood.InventorySort.InventorySort;
-import Wolfwood.InventorySort.workers.Sort;
-import Wolfwood.InventorySort.workers.SortHelp;
-import Wolfwood.InventorySort.workers.StackO;
+import VeraLapsa.InventorySort.CommandHandler;
+import VeraLapsa.InventorySort.Constants;
+import VeraLapsa.InventorySort.InventorySort;
+import VeraLapsa.InventorySort.workers.Sort;
+import VeraLapsa.InventorySort.workers.SortHelp;
+import VeraLapsa.InventorySort.workers.StackO;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

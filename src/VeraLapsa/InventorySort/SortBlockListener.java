@@ -1,8 +1,8 @@
-package Wolfwood.InventorySort;
+package VeraLapsa.InventorySort;
 
 
-import Wolfwood.InventorySort.workers.ChestWorker;
-import Wolfwood.InventorySort.workers.Sort;
+import VeraLapsa.InventorySort.workers.ChestWorker;
+import VeraLapsa.InventorySort.workers.Sort;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

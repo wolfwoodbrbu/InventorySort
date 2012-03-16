@@ -1,4 +1,4 @@
-package Wolfwood.InventorySort;
+package VeraLapsa.InventorySort;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import Wolfwood.InventorySort.commands.SortChestCommand;
-import Wolfwood.InventorySort.commands.SortCommand;
+import VeraLapsa.InventorySort.commands.SortChestCommand;
+import VeraLapsa.InventorySort.commands.SortCommand;
 
 
 import java.io.File;
