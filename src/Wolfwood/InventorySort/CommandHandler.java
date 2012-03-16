@@ -64,16 +64,7 @@ public abstract class CommandHandler
         Player player = ( Player ) sender;
         try
         {
-            if ( InventorySort.wd != null )
-            {
-                return InventorySort.wd.getWorldPermissions( player ).has( player, node );
-            } else if(InventorySort.Permissions != null)
-            {
-                return InventorySort.Permissions.has( player, node );
-            } else
-            {
-            	return player.hasPermission( node );
-            }
+            return player.hasPermission(node);
         } catch ( NullPointerException e )
         {
             InventorySort.log.warning( "Permissions are not working for [InventorySort] defaulting to Op" );

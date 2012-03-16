@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.Configuration;
 
 /**
  * @version 2.0
@@ -134,15 +134,9 @@ public class SortCommand extends CommandHandler {
 
     private void setUserSetting(String name, boolean setting) {
         Configuration config = Constants.Config;
-        config.load();
-        config.setProperty("Users." + name + ".Stack", setting);
-        if (config.save()) {
-            if (Constants.Debug) {
-                Constants.log.info(Constants.B_PluginName + " Saved " + name + "'s setting to config: " + setting);
-            }
-        } else {
-            Constants.log.warning(Constants.B_PluginName + " was not able to save to the config.");
+        config.addDefault("Users." + name + ".Stack", setting);
+        if (Constants.Debug) {
+            Constants.log.info(Constants.B_PluginName + " Saved " + name + "'s setting to config");
         }
     }
-
 }

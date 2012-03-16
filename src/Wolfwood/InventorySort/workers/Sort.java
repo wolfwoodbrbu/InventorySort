@@ -4,7 +4,7 @@ import Wolfwood.InventorySort.Constants;
 import Wolfwood.InventorySort.InventorySort;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.Configuration;
 
 /**
  * @version 2.0
@@ -173,16 +173,12 @@ public class Sort {
 
     private boolean getUserSetting(String name) {
         Configuration config = Constants.Config;
-        config.load();
         boolean setting = config.getBoolean("Users." + name + ".Stack", Constants.Stack_Default);
-        config.setProperty("Users." + name + ".Stack", setting);
-        if (config.save()) {
-            if (Constants.Debug) {
-                Constants.log.info(Constants.B_PluginName + " Saved " + name + "'s setting to config");
-            }
-        } else {
-            Constants.log.warning(Constants.B_PluginName + " was not able to save to the config.");
+        config.addDefault("Users." + name + ".Stack", setting);
+        if (Constants.Debug) {
+            Constants.log.info(Constants.B_PluginName + " Saved " + name + "'s setting to config");
         }
+
 
         return setting;
     }

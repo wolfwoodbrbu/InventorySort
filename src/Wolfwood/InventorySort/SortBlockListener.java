@@ -5,14 +5,16 @@ import Wolfwood.InventorySort.workers.ChestWorker;
 import Wolfwood.InventorySort.workers.Sort;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockListener;
 
 /**
  * @version 2.0
  * @author Faye Bickerton AKA VeraLapsa
  */
-class SortBlockListener extends BlockListener
+class SortBlockListener implements Listener 
 {
     private final InventorySort plugin;
     Sort sort;
@@ -25,7 +27,7 @@ class SortBlockListener extends BlockListener
         CW = new ChestWorker( sort );
     }
 
-    @Override
+    @EventHandler(priority= EventPriority.HIGHEST)
     public void onBlockDamage( BlockDamageEvent event )
     {
         Player player = event.getPlayer();
@@ -46,19 +48,11 @@ class SortBlockListener extends BlockListener
     {
         String node = "iSort.basic.chest.wand";
         try
-        {
-            if ( InventorySort.wd != null )
-            {
-                return InventorySort.wd.getWorldPermissions( player ).has( player, node );
-            } else if(InventorySort.Permissions != null)
-            {
-                return InventorySort.Permissions.has( player, node );
-            } else
-            {
-            	if (Constants.Op_Wand) {
-            		return player.isOp();
-				}
-            	return true;
+        {   
+            if (Constants.Op_Wand) {
+                return player.isOp();
+            } else {
+                return player.hasPermission(node); 
             }
         } catch ( NullPointerException e )
         {

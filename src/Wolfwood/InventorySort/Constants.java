@@ -2,7 +2,7 @@ package Wolfwood.InventorySort;
 
 
 import java.util.logging.Logger;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.Configuration;
 
 /**
  * @version 2.0
@@ -34,23 +34,22 @@ public class Constants
 
     public static void load( Configuration config )
     {
-        Config = config;
-        config.load();
+        
 
         Stack_Default = config.getBoolean( "Stack.Default.Enabled", Stack_Default );
-        config.setProperty( "Stack.Default.Enabled", Stack_Default );
+        config.addDefault("Stack.Default.Enabled", Stack_Default );
 
         Stack_Toggle = config.getBoolean( "Stack.Toggle.Enabled", Stack_Toggle );
-        config.setProperty( "Stack.Toggle.Enabled", Stack_Toggle );
+        config.addDefault( "Stack.Toggle.Enabled", Stack_Toggle );
 
         Stack_Tools = config.getBoolean( "Stack.Tools.Enabled", Stack_Tools );
-        config.setProperty( "Stack.Tools.Enabled", Stack_Tools );
+        config.addDefault( "Stack.Tools.Enabled", Stack_Tools );
 
         Stack_Armor = config.getBoolean( "Stack.Armor.Enabled", Stack_Armor );
-        config.setProperty( "Stack.Armor.Enabled", Stack_Armor );
+        config.addDefault( "Stack.Armor.Enabled", Stack_Armor );
 
         Wand = config.getInt( "Chest.Wand", Wand );
-        config.setProperty( "Chest.Wand", Wand );
+        config.addDefault( "Chest.Wand", Wand );
 
         Debug = config.getBoolean( "Debug.Messages.Enabled", Debug );
         if (Debug) {
@@ -62,7 +61,7 @@ public class Constants
 			log.info(B_PluginName + " Debug: " + Debug);
 		}
         
-        config.save();
+        Config = config;
 
     }
     
